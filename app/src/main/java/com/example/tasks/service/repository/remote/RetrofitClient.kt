@@ -4,7 +4,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class RetrofitClient private constructor() {
+class RetrofitClient {
 
     companion object {
 
@@ -13,11 +13,11 @@ class RetrofitClient private constructor() {
 
         private fun getRetrofitInstance(): Retrofit {
             val httpClient = OkHttpClient.Builder()
-            if (!Companion::retrofit.isInitialized) {
+            if (!::retrofit.isInitialized) {
                 retrofit = Retrofit.Builder()
                     .baseUrl(baseUrl)
-                    .addConverterFactory(GsonConverterFactory.create())
                     .client(httpClient.build())
+                    .addConverterFactory(GsonConverterFactory.create())
                     .build()
             }
             return retrofit
@@ -27,4 +27,5 @@ class RetrofitClient private constructor() {
             return getRetrofitInstance().create(serviceClass)
         }
     }
+
 }
