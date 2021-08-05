@@ -5,11 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tasks.R
@@ -23,16 +22,19 @@ class AllTasksFragment : Fragment() {
     private lateinit var mViewModel: AllTasksViewModel
     private lateinit var mListener: TaskListener
     private val mAdapter = TaskAdapter()
+    private var mTaskFilter = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, s: Bundle?): View {
         mViewModel = ViewModelProvider(this).get(AllTasksViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_all_tasks, container, false)
 
+        // Filtro de tarefas
+        mTaskFilter = arguments!!.getInt(TaskConstants.BUNDLE.TASKFILTER, 0)
+
         val recycler = root.findViewById<RecyclerView>(R.id.recycler_all_tasks)
         recycler.layoutManager = LinearLayoutManager(context)
         recycler.adapter = mAdapter
 
-        // Eventos disparados ao clicar nas linhas da RecyclerView
         mListener = object : TaskListener {
             override fun onListClick(id: Int) {
                 val intent = Intent(context, TaskFormActivity::class.java)
@@ -43,12 +45,15 @@ class AllTasksFragment : Fragment() {
             }
 
             override fun onDeleteClick(id: Int) {
+                mViewModel.deleteTask(id)
             }
 
             override fun onCompleteClick(id: Int) {
+                mViewModel.completeTask(id)
             }
 
             override fun onUndoClick(id: Int) {
+                mViewModel.undoTask(id)
             }
         }
 
@@ -62,8 +67,23 @@ class AllTasksFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         mAdapter.attachListener(mListener)
+        mViewModel.list(mTaskFilter)
     }
 
-    private fun observe() {}
+    private fun observe() {
+        mViewModel.taskList.observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                mAdapter.updateList(it)
+            }
+        })
+
+        mViewModel.validation.observe(viewLifecycleOwner, Observer {
+            if (it.success()) {
+                Toast.makeText(context, R.string.task_removed, Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, it.failure(), Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
 
 }

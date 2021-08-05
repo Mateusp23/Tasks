@@ -12,7 +12,6 @@ class TaskConstants private constructor() {
         const val PERSON_NAME = "personname"
     }
 
-    // Requisições API
     object HEADER {
         const val TOKEN_KEY = "token"
         const val PERSON_KEY = "personkey"

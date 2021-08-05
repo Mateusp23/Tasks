@@ -7,6 +7,6 @@ import retrofit2.http.GET
 interface PriorityService {
 
     @GET("Priority")
-    fun list(): Call<List<PriorityModel>>
+    fun all(): Call<List<PriorityModel>>
 
 }

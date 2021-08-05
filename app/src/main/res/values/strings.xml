@@ -33,4 +33,9 @@
     <string name="all_tasks">Tarefas</string>
     <string name="proximos_7_dias">Próximos 7 dias</string>
 
+    <string name="fp_titulo">Autenticação</string>
+    <string name="fp_subtitulo">Verificação biométrica</string>
+    <string name="fp_descricao">Use sua digital para fazer o login</string>
+    <string name="fp_cancelar">Agora não</string>
+
 </resources>

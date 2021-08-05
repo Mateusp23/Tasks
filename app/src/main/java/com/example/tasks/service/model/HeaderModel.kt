@@ -5,12 +5,12 @@ import com.google.gson.annotations.SerializedName
 class HeaderModel {
 
     @SerializedName("token")
-    var token: String = ""
+    lateinit var token: String
 
     @SerializedName("personKey")
-    var personKey: String = ""
+    lateinit var personKey: String
 
     @SerializedName("name")
-    var name: String = ""
+    lateinit var name: String
 
 }

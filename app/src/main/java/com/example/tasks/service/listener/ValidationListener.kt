@@ -1,17 +1,18 @@
 package com.example.tasks.service.listener
 
-class ValidationListener(str: String = "") {
+class ValidationListener(errorMessage: String = "") {
 
     private var mStatus: Boolean = true
-    private var mMessage: String = ""
+    private var mValidationMessage: String = ""
 
     init {
-        if(str != ""){
+        if (errorMessage != "") {
             mStatus = false
-            mMessage = str
+            mValidationMessage = errorMessage
         }
     }
 
     fun success() = mStatus
-    fun failure() = mMessage
+    fun failure() = mValidationMessage
+
 }
